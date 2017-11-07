@@ -18,24 +18,43 @@ import model.repository.ContactRepository;
  * Servlet implementation class DeleteContactController
  */
 public class ContactUpdateController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = Logger.getLogger(ContactUpdateController.class.getName());
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public ContactUpdateController() {
-		super();
-	}
+    private static final Logger log = Logger.getLogger(ContactUpdateController.class.getName());
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// TODO
-	}
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ContactUpdateController() {
+        super();
+    }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String id = request.getParameter("id");
+
+        ContactRepository bd = ContactRepository.getInstance();
+        Contact contacto = bd.getContact(id);
+        request.setAttribute("contact", contacto);
+
+        request.getRequestDispatcher("/contactEditView.jsp").forward(request, response);
+
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+
+        ContactRepository bd = ContactRepository.getInstance();
+        Contact contacto = bd.getContact(id);
+        contacto.setName(name);
+        contacto.setTelephone(phone);
+        bd.updateContact(contacto);
+        request.setAttribute("message", "Contacto modificado");
+        request.getRequestDispatcher("/").forward(request, response);
+    }
 
 }

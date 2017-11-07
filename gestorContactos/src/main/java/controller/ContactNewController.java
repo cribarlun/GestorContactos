@@ -17,31 +17,40 @@ import model.repository.ContactRepository;
  * Servlet implementation class ContactNewController
  */
 public class ContactNewController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	private static final Logger log = Logger.getLogger(ContactUpdateController.class.getName());
-	
+
+    private static final long serialVersionUID = 1L;
+
+    private static final Logger log = Logger.getLogger(ContactUpdateController.class.getName());
+
     public ContactNewController() {
         super();
-        // TODO Auto-generated constructor stub
+       
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		// TODO: Read request parameters
-		
-		
-		// TODO: Create contact in the repository
-		
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		// TODO: Forward to contact list view
-		request.setAttribute("message", "Contact created successfully");
-		
-	}
+        //  Read request parameters
+        String nombre = request.getParameter("name");
+        String telefono = request.getParameter("phone");
+        if (nombre == null || nombre.equals("") || telefono == null || telefono.equals("")) {
+            request.setAttribute("message", "Los datos introducidos no son válidos");
+            request.getRequestDispatcher("contactEditView.jsp").forward(request, response);
+        } else {
+            System.out.println("Vamos a crar un contacto: " + nombre + " - " + telefono);
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+            //  Create contact in the repository
+            ContactRepository bd = ContactRepository.getInstance();
+            bd.addContact(nombre, telefono);
+
+            //  Forward to contact list view
+            request.setAttribute("message", "Contacto creado con éxito!");
+            request.getRequestDispatcher("/").forward(request, response);
+        }
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        doGet(request, response);
+    }
 
 }

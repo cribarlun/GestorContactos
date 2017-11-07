@@ -15,30 +15,36 @@ import model.repository.ContactRepository;
  * Servlet implementation class ContactDeleteController
  */
 public class ContactDeleteController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	private static final Logger log = Logger.getLogger(ContactUpdateController.class.getName());
-	
+
+    private static final long serialVersionUID = 1L;
+
+    private static final Logger log = Logger.getLogger(ContactUpdateController.class.getName());
+
     public ContactDeleteController() {
         super();
         // TODO Auto-generated constructor stub
     }
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// TODO: Delete contact
-		
-		
-		// TODO: Forward to contact list view
-		request.setAttribute("message", "Contact deleted successfully");
-		
-	}
+        String id = request.getParameter("id");
 
+        if (id != null && !id.equals("")) {
+            ContactRepository bd = ContactRepository.getInstance();
+            bd.deleteContact(id);
+            request.setAttribute("message", "Contacto borrado");
+            request.getRequestDispatcher("/").forward(request, response);
+        }
+        // TODO: Delete contact
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        // TODO: Forward to contact list view
+        request.setAttribute("message", "Contact deleted successfully");
+
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doGet(request, response);
+    }
 
 }

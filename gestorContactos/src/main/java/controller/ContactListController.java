@@ -32,7 +32,7 @@ public class ContactListController extends HttpServlet {
 		// Load contacts
 		ContactRepository repository = ContactRepository.getInstance();
 		Map<String,Contact> contacts = repository.getContacts();
-		
+
 		 log.log(Level.FINE, "Processing GET request:  " + contacts.size() + " contacts loaded.");
 		
 		// Send contacts to index.jsp

@@ -5,55 +5,70 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
 
 import model.Contact;
 
 public class ContactRepository {
 
-	private Map<String,Contact> contacts;
-	private static ContactRepository instance=null;
-	private int index=0;			// Index to create contacts' identifiers.
-	
-	public static ContactRepository getInstance() {
-		
-		if (instance==null) {
-			instance = new ContactRepository();
-			instance.init();
-		}
-		
-		return instance;
-	}
-	
-	public void init() {
-		contacts = new HashMap<String,Contact>();
-		addContact("Manuel Durán", "699045872");
-		addContact("Daniel López", "954822754");
-		addContact("Ana María Calleja", "362578966");
-	}
+    private Map<String, Contact> contacts;
+    private static ContactRepository instance = null;
+    private int index = 0;			// Index to create contacts' identifiers.
 
-	public Map<String,Contact> getContacts() {
-		return contacts;
-	}
+    public static ContactRepository getInstance() {
 
-	public void updateContact(Contact c) {
-		contacts.put(c.getId(), c);
-	}
+        if (instance == null) {
+            instance = new ContactRepository();
+            instance.init();
+        }
 
-	public Contact getContact(String id) {
-		return contacts.get(id);
-	}
+        return instance;
+    }
 
-	public Contact addContact(String name, String telephone) {
-		// Create random id
-		String id = "c" + index;
-		Contact c = new Contact(id, name, telephone);
-		contacts.put(id,c);
-		index++;
-		return c;
-	}
+    public void init() {
+        contacts = new HashMap<String, Contact>();
+        addContact("Manuel Durán", "699045872");
+        addContact("Daniel López", "954822754");
+        addContact("Ana María Calleja", "362578966");
+    }
 
-	public void deleteContact(String id) {
-		contacts.remove(id);
-	}
+    public Map<String, Contact> getContacts() {
+        return contacts;
+    }
 
+    public void updateContact(Contact c) {
+        contacts.put(c.getId(), c);
+    }
+
+    public Contact getContact(String id) {
+        return contacts.get(id);
+    }
+
+    public Contact addContact(String name, String telephone) {
+        // Create random id
+        String id = "c" + index;
+        Contact c = new Contact(id, name, telephone);
+        contacts.put(id, c);
+        index++;
+        return c;
+    }
+
+    public void deleteContact(String id) {
+        contacts.remove(id);
+    }
+
+    public Map<String, Contact> getContactsMovil() {
+        Map<String, Contact> contactsMovil = new HashMap<>();
+        Contact c = null;
+
+        for (String id : contacts.keySet()) {
+            c = contacts.get(id);
+            if (c.getTelephone().startsWith("6") || c.getTelephone().startsWith("7")) {
+                contactsMovil.put(id, c);
+            }
+
+        }
+
+        return contactsMovil;
+    }
 }
